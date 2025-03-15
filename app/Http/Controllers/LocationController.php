@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Log;
 class LocationController extends Controller
 {
 
-
     public function store(Request $request)
     {
         // Validate incoming request data
@@ -17,22 +16,28 @@ class LocationController extends Controller
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
             'ip' => 'required|string',
-            'country' => 'string',
-            'city' => 'string',
+            'city' => 'nullable|string',  // Make sure city is optional
+            'country' => 'nullable|string',  // Make sure country is optional
         ]);
-
-        // Store the data in the database
-        Location::create([
-            'latitude' => $request->latitude,
-            'longitude' => $request->longitude,
-            'ip' => $request->ip,
-            'country' => $request->country,
-            'city' => $request->city,
-        ]);
-
-        return response()->json(['message' => 'Location data stored successfully'], 201);
+    
+        try {
+            // Store the location data in the database
+            Location::create([
+                'latitude' => $request->latitude,
+                'longitude' => $request->longitude,
+                'ip' => $request->ip,
+                'city' => $request->city ?? 'Unknown',  // Default to 'Unknown' if not provided
+                'country' => $request->country ?? 'Unknown',  // Default to 'Unknown' if not provided
+            ]);
+    
+            return response()->json(['message' => 'Location data stored successfully'], 201);
+        } catch (\Exception $e) {
+            // Log error and return a 500 response with the exception message
+            Log::error('Error storing location data: ' . $e->getMessage());
+            return response()->json(['error' => 'Failed to store location data.'], 500);
+        }
     }
-
+    
     
     // public function store(Request $request)
     // {

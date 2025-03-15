@@ -7,9 +7,6 @@ use Illuminate\Http\Request;
 
 class FilteringController extends Controller
 {
-    /**
-     * Display the admin dashboard with locations
-     */
     public function dashboard(Request $request)
     {
         // Base query for locations - return all by default
