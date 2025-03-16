@@ -6,6 +6,6 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::get('/send', [LocationController::class,'sendStaticEmail']);
+
 
 Route::get('/', [FilteringController::class, 'dashboard'])->name('admin.dashboard');

@@ -199,9 +199,7 @@
                         <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                             عنوان IP
                         </th>
-                        <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            الدولة
-                        </th>
+                       
                         <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                             تاريخ الإنشاء
                         </th>
@@ -221,10 +219,7 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                 {{ $location->ip }}
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                {{ $location->country ?? '-' }}
-                            </td>
+                            </td>     
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                 {{ $location->created_at }}
                             </td>
