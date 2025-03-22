@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Location;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -37,7 +38,46 @@ class LocationController extends Controller
     }
     
     
-   
+ // Method to activate the location collection
+ public function activateLocation(Request $request)
+ {
+     // Find the setting (or create one if it doesn't exist)
+     $setting = Setting::first();
 
+     if ($setting) {
+         $setting->is_location_enabled = true;
+         $setting->save();
+     } else {
+         // If no setting is found, create a new one and activate location collection
+         Setting::create([
+             'is_location_enabled' => true
+         ]);
+     }
+
+     return redirect()->back()->with('success', 'تم تفعيل جمع البيانات بنجاح!');
+ }
+
+ // Method to deactivate the location collection
+ public function deactivateLocation(Request $request)
+ {
+     $setting = Setting::first();
+
+     if ($setting) {
+         $setting->is_location_enabled = false;
+         $setting->save();
+     }
+
+     return redirect()->back()->with('success', 'تم إلغاء تفعيل جمع البيانات بنجاح!');
+ }
+    
+  // In your LocationController.php
+  public function getLocationStatus()
+  {
+      $setting = Setting::first();
+      return response()->json([
+          'status' => $setting ? $setting->is_location_enabled : false
+      ],200);
+  }
+  
     
 }

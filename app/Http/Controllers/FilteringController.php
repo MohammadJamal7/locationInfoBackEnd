@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Location;
@@ -18,9 +19,10 @@ class FilteringController extends Controller
             $query->whereDate('created_at', $selectedDate);
         }
         
-        // Apply IP filter if provided
+        // Apply partial IP filter if provided
         if ($request->has('ip') && $request->ip) {
-            $query->where('ip', $request->ip);
+            // Using 'like' to match partial IP addresses
+            $query->where('ip', 'like', '%' . $request->ip . '%');
         }
         
         // Get statistics
@@ -39,7 +41,4 @@ class FilteringController extends Controller
         
         return view('admin.dashboard', compact('locations', 'stats', 'uniqueIps'));
     }
-    
- 
-   
 }

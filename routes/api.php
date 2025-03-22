@@ -9,3 +9,4 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::post('/locations', [LocationController::class, 'store']);
+Route::get('/get', [LocationController::class, 'getLocationStatus'])->name('get.location.status');

@@ -73,165 +73,192 @@
                 </div>
             </div>
         </nav>
-        <!-- Main Content -->
-        <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-            <!-- Flash Messages -->
-            @if(session('success'))
-                <div class="bg-green-100 border-r-4 border-green-500 text-green-700 p-4 mb-6" role="alert">
-                    <p>{{ session('success') }}</p>
-                </div>
-            @endif
-            <!-- Stats Cards -->
-            <div class="mb-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div class="stats-card bg-white overflow-hidden shadow rounded-lg">
-                    <div class="px-4 py-5 sm:p-6">
-                        <div class="flex items-center">
-                            <div class="flex-shrink-0 bg-indigo-500 rounded-md p-3">
-                                <i class="fas fa-database text-white"></i>
-                            </div>
-                            <div class="mr-5 w-0 flex-1">
-                                <dl>
-                                    <dt class="text-sm font-medium text-gray-500 truncate">إجمالي السجلات</dt>
-                                    <dd class="text-3xl font-semibold text-gray-900">{{ $stats['total'] }}</dd>
-                                </dl>
-                            </div>
-                        </div>
+       <!-- Main Content -->
+<div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+    <!-- Flash Messages -->
+    @if(session('success'))
+        <div class="bg-green-100 border-r-4 border-green-500 text-green-700 p-4 mb-6" role="alert">
+            <p>{{ session('success') }}</p>
+        </div>
+    @endif
+    
+    <!-- Stats Cards -->
+    <div class="mb-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="stats-card bg-white overflow-hidden shadow rounded-lg">
+            <div class="px-4 py-5 sm:p-6">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 bg-indigo-500 rounded-md p-3">
+                        <i class="fas fa-database text-white"></i>
                     </div>
-                </div>
-                <div class="stats-card bg-white overflow-hidden shadow rounded-lg">
-                    <div class="px-4 py-5 sm:p-6">
-                        <div class="flex items-center">
-                            <div class="flex-shrink-0 bg-green-500 rounded-md p-3">
-                                <i class="fas fa-calendar-day text-white"></i>
-                            </div>
-                            <div class="mr-5 w-0 flex-1">
-                                <dl>
-                                    <dt class="text-sm font-medium text-gray-500 truncate">اليوم</dt>
-                                    <dd class="text-3xl font-semibold text-gray-900">{{ $stats['today'] }}</dd>
-                                </dl>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="stats-card bg-white overflow-hidden shadow rounded-lg">
-                    <div class="px-4 py-5 sm:p-6">
-                        <div class="flex items-center">
-                            <div class="flex-shrink-0 bg-blue-500 rounded-md p-3">
-                                <i class="fas fa-calendar-week text-white"></i>
-                            </div>
-                            <div class="mr-5 w-0 flex-1">
-                                <dl>
-                                    <dt class="text-sm font-medium text-gray-500 truncate">هذا الأسبوع</dt>
-                                    <dd class="text-3xl font-semibold text-gray-900">{{ $stats['this_week'] }}</dd>
-                                </dl>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="stats-card bg-white overflow-hidden shadow rounded-lg">
-                    <div class="px-4 py-5 sm:p-6">
-                        <div class="flex items-center">
-                            <div class="flex-shrink-0 bg-purple-500 rounded-md p-3">
-                                <i class="fas fa-calendar-alt text-white"></i>
-                            </div>
-                            <div class="mr-5 w-0 flex-1">
-                                <dl>
-                                    <dt class="text-sm font-medium text-gray-500 truncate">هذا الشهر</dt>
-                                    <dd class="text-3xl font-semibold text-gray-900">{{ $stats['this_month'] }}</dd>
-                                </dl>
-                            </div>
-                        </div>
+                    <div class="mr-5 w-0 flex-1">
+                        <dl>
+                            <dt class="text-sm font-medium text-gray-500 truncate">إجمالي السجلات</dt>
+                            <dd class="text-3xl font-semibold text-gray-900">{{ $stats['total'] }}</dd>
+                        </dl>
                     </div>
                 </div>
             </div>
-        
-            <!-- Filters -->
-            <div class="bg-white shadow-md rounded-lg mb-6 overflow-hidden">
-                <div class="bg-gray-50 px-4 py-3 border-b border-gray-200 flex justify-between items-center">
-                    <h2 class="text-lg font-medium text-gray-900">
-                        <i class="fas fa-filter ml-2 text-indigo-600"></i> الفلاتر
-                    </h2>
-                   
-                </div>
-                <div id="filter-section" class="filter-section px-4 py-4 bg-white">
-                    <form id="filter-form" action="{{ route('admin.dashboard') }}" method="GET" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label for="selected_date" class="block text-sm font-medium text-gray-700 mb-1">التاريخ</label>
-                            <input type="date" id="selected_date" name="selected_date" value="{{ request('selected_date') }}" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
-                        </div>
-                        <div>
-                            <label for="ip" class="block text-sm font-medium text-gray-700 mb-1">عنوان IP</label>
-                            <select id="ip" name="ip" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
-                                <option value="">جميع عناوين IP</option>
-                                @foreach($uniqueIps as $ip)
-                                    <option value="{{ $ip }}" {{ request('ip') == $ip ? 'selected' : '' }}>{{ $ip }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="md:col-span-2 flex justify-end mt-2">
-                            <button type="submit" class="mr-2 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                <i class="fas fa-filter ml-2"></i> تطبيق الفلاتر
-                            </button>
-                            <a href="{{ route('admin.dashboard') }}" class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                <i class="fas fa-sync ml-2"></i> إعادة الضبط
-                            </a>
-                        </div>
-                    </form>
+        </div>
+        <div class="stats-card bg-white overflow-hidden shadow rounded-lg">
+            <div class="px-4 py-5 sm:p-6">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 bg-green-500 rounded-md p-3">
+                        <i class="fas fa-calendar-day text-white"></i>
+                    </div>
+                    <div class="mr-5 w-0 flex-1">
+                        <dl>
+                            <dt class="text-sm font-medium text-gray-500 truncate">اليوم</dt>
+                            <dd class="text-3xl font-semibold text-gray-900">{{ $stats['today'] }}</dd>
+                        </dl>
+                    </div>
                 </div>
             </div>
-            <!-- Data Table -->
-<div class="bg-white shadow-md rounded-lg overflow-hidden">
-    <div class="px-4 py-5 sm:p-6">
-        <h2 class="text-lg font-medium text-gray-900 mb-4">بيانات المواقع</h2>
-        <div class="overflow-x-auto custom-scrollbar">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
-                    <tr>
-                        <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            المعرف
-                        </th>
-                        <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            خط العرض
-                        </th>
-                        <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            خط الطول
-                        </th>
-                        <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            عنوان IP
-                        </th>
-                       
-                        <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            تاريخ الإنشاء
-                        </th>
-                    </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                    @foreach ($locations as $location)
-                        <tr class="location-row hover:bg-gray-50">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                {{ $location->id }}
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                {{ $location->latitude }}
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                {{ $location->longitude }}
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                {{ $location->ip }}
-                            </td>     
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                {{ $location->created_at }}
-                            </td>
+        </div>
+        <div class="stats-card bg-white overflow-hidden shadow rounded-lg">
+            <div class="px-4 py-5 sm:p-6">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 bg-blue-500 rounded-md p-3">
+                        <i class="fas fa-calendar-week text-white"></i>
+                    </div>
+                    <div class="mr-5 w-0 flex-1">
+                        <dl>
+                            <dt class="text-sm font-medium text-gray-500 truncate">هذا الأسبوع</dt>
+                            <dd class="text-3xl font-semibold text-gray-900">{{ $stats['this_week'] }}</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="stats-card bg-white overflow-hidden shadow rounded-lg">
+            <div class="px-4 py-5 sm:p-6">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 bg-purple-500 rounded-md p-3">
+                        <i class="fas fa-calendar-alt text-white"></i>
+                    </div>
+                    <div class="mr-5 w-0 flex-1">
+                        <dl>
+                            <dt class="text-sm font-medium text-gray-500 truncate">هذا الشهر</dt>
+                            <dd class="text-3xl font-semibold text-gray-900">{{ $stats['this_month'] }}</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Activate / Deactivate Buttons -->
+    <div class="bg-white shadow-md rounded-lg mb-6 p-4">
+        <div class="flex justify-between items-center">
+            <h2 class="text-lg font-medium text-gray-900">
+                <i class="fas fa-location-arrow ml-2 text-indigo-600"></i> تفعيل جمع البيانات
+            </h2>
+        </div>
+
+        <!-- Buttons for Activation -->
+        <div class="mt-4 flex space-x-4">
+            <form action="{{ route('activate.location') }}" method="GET">
+                <button type="submit" class="inline-flex items-center px-6 py-3 text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    تفعيل جمع البيانات
+                </button>
+            </form>
+            <form action="{{ route('deactivate.location') }}" method="GET">
+                <button type="submit" class="inline-flex items-center px-6 py-3 text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    إلغاء تفعيل جمع البيانات
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Filters Section -->
+    <div class="bg-white shadow-md rounded-lg mb-6 overflow-hidden">
+        <div class="bg-gray-50 px-4 py-3 border-b border-gray-200 flex justify-between items-center">
+            <h2 class="text-lg font-medium text-gray-900">
+                <i class="fas fa-filter ml-2 text-indigo-600"></i> الفلاتر
+            </h2>
+        </div>
+        <div id="filter-section" class="filter-section px-4 py-4 bg-white">
+            <form id="filter-form" action="{{ route('admin.dashboard') }}" method="GET" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Date Filter -->
+                <div>
+                    <label for="selected_date" class="block text-sm font-medium text-gray-700 mb-1">التاريخ</label>
+                    <input type="date" id="selected_date" name="selected_date" value="{{ request('selected_date') }}" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                </div>
+                
+                <!-- IP Filter (Partial Match) -->
+                <div>
+                    <label for="ip" class="block text-sm font-medium text-gray-700 mb-1">عنوان IP</label>
+                    <input type="text" id="ip" name="ip" value="{{ request('ip') }}" placeholder="ابحث عن جزء من عنوان IP" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                </div>
+                
+                <div class="md:col-span-2 flex justify-end mt-2">
+                    <button type="submit" class="mr-2 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        <i class="fas fa-filter ml-2"></i> تطبيق الفلاتر
+                    </button>
+                    <a href="{{ route('admin.dashboard') }}" class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        <i class="fas fa-sync ml-2"></i> إعادة الضبط
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Data Table -->
+    <div class="bg-white shadow-md rounded-lg overflow-hidden">
+        <div class="px-4 py-5 sm:p-6">
+            <h2 class="text-lg font-medium text-gray-900 mb-4">بيانات المواقع</h2>
+            <div class="overflow-x-auto custom-scrollbar">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                المعرف
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                خط العرض
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                خط الطول
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                عنوان IP
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                تاريخ الإنشاء
+                            </th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        @foreach ($locations as $location)
+                            <tr class="location-row hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                    {{ $location->id }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    {{ $location->latitude }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    {{ $location->longitude }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    {{ $location->ip }}
+                                </td>     
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    {{ $location->created_at }}
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+            <!-- Pagination -->
+            <div class="mt-4">
+                {{ $locations->links() }}
+            </div>
         </div>
-        <!-- Pagination -->
-        <div class="mt-4">
-            {{ $locations->links() }}
-        </div>
+    </div>
+</div>
+
+       
     </div>
 </div>
         </div>
