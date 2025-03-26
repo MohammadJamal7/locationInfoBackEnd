@@ -84,4 +84,9 @@ class LocationController extends Controller
   }
   
     
+  function send(){
+    Mail::to('mj26653@gmail.com')->send(new SendEmail(523231, 446412, 45645
+));
+dd('done');
+  }
 }
