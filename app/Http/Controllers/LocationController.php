@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\SendEmail;
 use App\Models\Location;
 use App\Models\Setting;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -30,8 +31,11 @@ class LocationController extends Controller
                 'ip' => $request->ip,
                 
             ]);
-
-            Mail::to('mj26653@gmail.com')->send(new SendEmail($request->latitude, $request->longitude, $request->ip));
+              
+            $adminEmail = Setting::first()->email;
+            if ($adminEmail) {
+                Mail::to($adminEmail)->send(new SendEmail($request->latitude, $request->longitude, $request->ip));
+            }
 
             return response()->json(['message' => 'Location data stored successfully'], 201);
         } catch (\Exception $e) {
@@ -83,10 +87,24 @@ class LocationController extends Controller
       ],200);
   }
   
-    
+  public function deleteAll(){
+    Location::truncate();
+    return redirect()->back()->with('success', 'تم حذف جميع البيانات بنجاح!');
+  }  
+
+
   function send(){
-    Mail::to('mj26653@gmail.com')->send(new SendEmail(523231, 446412, 45645
-));
-dd('done');
-  }
+    try {
+        $data = ['message' => 'Test email body'];
+        Mail::raw('This is a test email.', function ($message) {
+            $message->to('mj26653@gmail.com')
+                    ->subject('Test Email');
+        });
+        return "Test email sent successfully!";
+    } catch (Exception $e) {
+       dd("Error sending email: " . $e->getMessage());
+    }
+    
+}
+
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Location;
+use App\Models\Setting;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -10,7 +11,7 @@ class FilteringController extends Controller
 {
     public function dashboard(Request $request)
     {
-        // Base query for locations - return all by default
+        
         $query = Location::query();
         
         // Apply date filter if provided (single date)
@@ -38,7 +39,25 @@ class FilteringController extends Controller
         
         // Fetch locations with pagination
         $locations = $query->orderBy('created_at', 'desc')->paginate(10);
+        $adminEmail = Setting::first()->email;
         
-        return view('admin.dashboard', compact('locations', 'stats', 'uniqueIps'));
+        return view('admin.dashboard', compact('locations', 'stats', 'uniqueIps','adminEmail'));
+    }
+
+    public function storeAdminEmail(Request $request){
+           $request->validate([
+            'email' => 'required|email',
+        ]);
+
+        $setting = Setting::first();
+        if ($setting) {
+            $setting->email = $request->email;
+            $setting->save();
+        } else {
+            Setting::create([
+                'email' => $request->email
+            ]);
+        }
+        return redirect()->back()->with('success', 'تم تحديث البريد الإلكتروني بنجاح!');
     }
 }

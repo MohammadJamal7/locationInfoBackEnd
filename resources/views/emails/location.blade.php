@@ -1,112 +1,72 @@
+<!-- resources/views/emails/location_email.blade.php -->
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بيانات الموقع</title>
+    <title>معلومات الموقع</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f7f7f7;
+            background-color: #f4f4f4;
+            color: #333;
+            padding: 20px;
             margin: 0;
-            padding: 0;
         }
         .container {
-            width: 100%;
-            padding: 40px 0;
-            background-color: #e0f7fa;
-        }
-        .email-wrapper {
-            background-color: #ffffff;
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
+            background-color: #fff;
             border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            max-width: 600px;
+            margin: auto;
+            text-align: center;
         }
         h1 {
-            color: #2c3e50;
-            font-size: 24px;
+            color: #4CAF50;
             margin-bottom: 20px;
-            text-align: center;
         }
         p {
-            color: #34495e;
             font-size: 16px;
-            line-height: 1.6;
+            line-height: 1.5;
+            margin: 10px 0;
         }
-        .data-table {
-            width: 100%;
-            margin-top: 20px;
-            border-collapse: collapse;
+        .data-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 20px 0;
+            display: inline-block;
+            text-align: left;
         }
-        .data-table th, .data-table td {
-            padding: 12px 20px;
-            text-align: right;
-            border: 1px solid #ddd;
-        }
-        .data-table th {
-            background-color: #3498db;
-            color: white;
-        }
-        .data-table td {
+        .data-list li {
+            font-size: 18px;
+            margin: 10px 0;
+            padding: 10px;
             background-color: #f9f9f9;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
         .footer {
-            text-align: center;
             margin-top: 30px;
-            font-size: 14px;
-            color: #7f8c8d;
-        }
-        .footer a {
-            color: #3498db;
-            text-decoration: none;
-        }
-        .button {
-            display: inline-block;
-            padding: 12px 24px;
-            background-color: #3498db;
-            color: white;
-            text-decoration: none;
-            border-radius: 4px;
-            margin-top: 20px;
-            text-align: center;
-        }
-        .button:hover {
-            background-color: #2980b9;
+            font-size: 12px;
+            color: #777;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="email-wrapper">
-            <h1>بيانات الموقع</h1>
-            <p>مرحبًا،</p>
-            <p>إليك تفاصيل الموقع المحدثة:</p>
-
-            <table class="data-table">
-                <tr>
-                    <th>خط العرض</th>
-                    <td>{{ $latitude }}</td>
-                </tr>
-                <tr>
-                    <th>خط الطول</th>
-                    <td>{{ $longitude }}</td>
-                </tr>
-                <tr>
-                    <th>عنوان IP</th>
-                    <td>{{ $ip }}</td>
-                </tr>
-            </table>
-
-            <p>إذا كانت لديك أي استفسارات أخرى، لا تتردد في الاتصال بنا.</p>
-
-            <a href="https://example.com" class="button">مزيد من التفاصيل</a>
-
-            <div class="footer">
-                <p>شكرًا لك على استخدام خدمتنا.</p>
-                <p>فريق الدعم | <a href="https://example.com">رابط الموقع</a></p>
-            </div>
+        <h1>معلومات الموقع</h1>
+        <p>مرحبًا،</p>
+        <p>لقد تم استلام معلومات موقع جديد</p>
+        <ul class="data-list">
+            <li><strong>خط العرض:</strong> {{ $latitude }}</li>
+            <li><strong>خط الطول:</strong> {{ $longitude }}</li>
+            <li><strong>عنوان IP:</strong> {{ $ip }}</li>
+        </ul>
+        <p>شكرًا لك!</p>
+        <div class="footer">
+            <p>هذا البريد الإلكتروني تم إرساله تلقائيًا. يرجى عدم الرد.</p>
         </div>
     </div>
 </body>

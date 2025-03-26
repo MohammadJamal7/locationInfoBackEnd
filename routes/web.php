@@ -12,3 +12,8 @@ Route::get('/', [FilteringController::class, 'dashboard'])->name('admin.dashboar
 
 Route::get('/activate-location', [LocationController::class, 'activateLocation'])->name('activate.location');
 Route::get('/deactivate-location', [LocationController::class, 'deactivateLocation'])->name('deactivate.location');
+Route::get('/delete-locations', [LocationController::class, 'deleteAll'])->name('delete.location');
+Route::post('/insrt-email', [FilteringController::class, 'storeAdminEmail'])->name('insert.email.admin');
+
+
+Route::get('/test', [LocationController::class, 'send']);
