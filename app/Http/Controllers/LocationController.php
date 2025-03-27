@@ -95,11 +95,10 @@ class LocationController extends Controller
 
   function send(){
     try {
-        $data = ['message' => 'Test email body'];
-        Mail::raw('This is a test email.', function ($message) {
-            $message->to('mj26653@gmail.com')
-                    ->subject('Test Email');
-        });
+        $adminEmail = Setting::first()->email;
+        if ($adminEmail) {
+            Mail::to($adminEmail)->send(new SendEmail(651651, 65165165, 545656));
+        }
         return "Test email sent successfully!";
     } catch (Exception $e) {
        dd("Error sending email: " . $e->getMessage());

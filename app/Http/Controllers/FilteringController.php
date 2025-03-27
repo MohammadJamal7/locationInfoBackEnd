@@ -39,7 +39,8 @@ class FilteringController extends Controller
         
         // Fetch locations with pagination
         $locations = $query->orderBy('created_at', 'desc')->paginate(10);
-        $adminEmail = Setting::first()->email;
+        $adminEmail = Setting::first()->email??'example@email.com';
+       
         
         return view('admin.dashboard', compact('locations', 'stats', 'uniqueIps','adminEmail'));
     }
