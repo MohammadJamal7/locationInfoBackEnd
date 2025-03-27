@@ -3,213 +3,232 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة تحكم بيانات المواقع</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.css">
+    <title>لوحة تحكم المواقع</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Import Arabic font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Cairo', sans-serif;
+            font-family: 'Cairo', Arial, sans-serif;
+            background-color: #f4f6f9;
         }
-        .stats-card {
+        .custom-shadow {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .hover-lift {
             transition: all 0.3s ease;
         }
-        .stats-card:hover {
+        .hover-lift:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-        .filter-section {
-            transition: max-height 0.3s ease;
-            overflow: hidden;
-        }
-        .location-row {
-            transition: all 0.2s ease;
-        }
-        .location-row:hover {
-            background-color: rgba(243, 244, 246, 1);
-        }
-        /* Fixed RTL issues for flatpickr */
-        .flatpickr-calendar {
-            direction: rtl;
-        }
-      
-        /* Custom scrollbar for the table */
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 10px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #888;
-            border-radius: 10px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #555;
+            box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.15);
         }
     </style>
 </head>
-<body class="bg-gray-100">
+<body class="bg-gray-50">
     <div class="min-h-screen">
-        <!-- Navbar -->
-        <nav class="bg-white shadow-md">
+        <!-- Gradient Navbar -->
+        <nav class="bg-gradient-to-r from-indigo-600 to-purple-600 shadow-lg">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex justify-between h-16">
+                <div class="flex justify-between h-16 items-center">
                     <div class="flex items-center">
-                        <div class="flex-shrink-0 flex items-center">
-                            <i class="fas fa-map-marker-alt text-indigo-600 text-2xl ml-2"></i>
-                            <span class="text-gray-900 font-semibold text-lg">لوحة تحكم المواقع</span>
-                        </div>
+                        <i class="fas fa-map-marker-alt text-white text-2xl ml-3"></i>
+                        <span class="text-white font-bold text-xl">لوحة تحكم المواقع</span>
                     </div>
                 </div>
             </div>
         </nav>
 
-        <!-- Main Content -->
-        <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-            <!-- Flash Messages -->
-            @if(session('success'))
-                <div class="bg-green-100 border-r-4 border-green-500 text-green-700 p-4 mb-6" role="alert">
-                    <p>{{ session('success') }}</p>
-                </div>
-            @endif
+        <!-- Main Content Container -->
+        <div class="container mx-auto px-4 py-8 space-y-6">
+
+
             
-            <!-- Stats Cards -->
-            <div class="mb-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div class="stats-card bg-white overflow-hidden shadow rounded-lg">
-                    <div class="px-4 py-5 sm:p-6">
-                        <div class="flex items-center">
-                            <div class="flex-shrink-0 bg-indigo-500 rounded-md p-3">
-                                <i class="fas fa-database text-white"></i>
-                            </div>
-                            <div class="mr-5 w-0 flex-1">
-                                <dl>
-                                    <dt class="text-sm font-medium text-gray-500 truncate">إجمالي السجلات</dt>
-                                    <dd class="text-3xl font-semibold text-gray-900">{{ $stats['total'] }}</dd>
-                                </dl>
-                            </div>
-                        </div>
+            @if(session('success'))
+            <div id="success-toast" class="fixed top-0 right-0 m-6 w-80  p-5 bg-indigo-800 text-white rounded-lg shadow-xl opacity-0 transform translate-x-full transition-all duration-500 ease-in-out" role="alert">
+                <div class="flex items-center">
+                    <!-- Icon -->
+                    <i class="fas fa-check-circle text-4xl ml-4"></i> <!-- More space and larger icon -->
+                    <!-- Message -->
+                    <span class="font-semibold text-lg">{{ session('success') }}</span>
+                </div>
+            </div>
+    
+
+            <script>
+                window.onload = function() {
+                    const toast = document.getElementById('success-toast');
+                    toast.classList.remove('opacity-0', 'translate-x-full');
+                    toast.classList.add('opacity-100', 'translate-x-0');
+                    
+                    // Hide the toast after 5 seconds
+                    setTimeout(function() {
+                        toast.classList.remove('opacity-100', 'translate-x-0');
+                        toast.classList.add('opacity-0', 'translate-x-full');
+                    }, 5000); // 5 seconds
+                };
+            </script>
+        @endif
+        
+        
+              
+            <!-- Stats Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-white border border-gray-200 rounded-lg p-6 hover-lift custom-shadow flex items-center space-x-reverse space-x-4">
+                    <div class="bg-indigo-500 text-white p-4 rounded-full">
+                        <i class="fas fa-database text-2xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-gray-500 text-sm mb-1">إجمالي السجلات</p>
+                        <h3 class="text-2xl font-bold text-gray-800">{{ $stats['total'] }}</h3>
                     </div>
                 </div>
-                <div class="stats-card bg-white overflow-hidden shadow rounded-lg">
-                    <div class="px-4 py-5 sm:p-6">
-                        <div class="flex items-center">
-                            <div class="flex-shrink-0 bg-green-500 rounded-md p-3">
-                                <i class="fas fa-calendar-day text-white"></i>
-                            </div>
-                            <div class="mr-5 w-0 flex-1">
-                                <dl>
-                                    <dt class="text-sm font-medium text-gray-500 truncate">اليوم</dt>
-                                    <dd class="text-3xl font-semibold text-gray-900">{{ $stats['today'] }}</dd>
-                                </dl>
-                            </div>
-                        </div>
+
+                <div class="bg-white border border-gray-200 rounded-lg p-6 hover-lift custom-shadow flex items-center space-x-reverse space-x-4">
+                    <div class="bg-green-500 text-white p-4 rounded-full">
+                        <i class="fas fa-calendar-day text-2xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-gray-500 text-sm mb-1">اليوم</p>
+                        <h3 class="text-2xl font-bold text-gray-800">{{ $stats['today'] }}</h3>
                     </div>
                 </div>
-                <div class="stats-card bg-white overflow-hidden shadow rounded-lg">
-                    <div class="px-4 py-5 sm:p-6">
-                        <div class="flex items-center">
-                            <div class="flex-shrink-0 bg-blue-500 rounded-md p-3">
-                                <i class="fas fa-calendar-week text-white"></i>
-                            </div>
-                            <div class="mr-5 w-0 flex-1">
-                                <dl>
-                                    <dt class="text-sm font-medium text-gray-500 truncate">هذا الأسبوع</dt>
-                                    <dd class="text-3xl font-semibold text-gray-900">{{ $stats['this_week'] }}</dd>
-                                </dl>
-                            </div>
-                        </div>
+
+                <div class="bg-white border border-gray-200 rounded-lg p-6 hover-lift custom-shadow flex items-center space-x-reverse space-x-4">
+                    <div class="bg-blue-500 text-white p-4 rounded-full">
+                        <i class="fas fa-calendar-week text-2xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-gray-500 text-sm mb-1">هذا الأسبوع</p>
+                        <h3 class="text-2xl font-bold text-gray-800">{{ $stats['this_week'] }}</h3>
                     </div>
                 </div>
-                <div class="stats-card bg-white overflow-hidden shadow rounded-lg">
-                    <div class="px-4 py-5 sm:p-6">
-                        <div class="flex items-center">
-                            <div class="flex-shrink-0 bg-purple-500 rounded-md p-3">
-                                <i class="fas fa-calendar-alt text-white"></i>
-                            </div>
-                            <div class="mr-5 w-0 flex-1">
-                                <dl>
-                                    <dt class="text-sm font-medium text-gray-500 truncate">هذا الشهر</dt>
-                                    <dd class="text-3xl font-semibold text-gray-900">{{ $stats['this_month'] }}</dd>
-                                </dl>
-                            </div>
-                        </div>
+
+                <div class="bg-white border border-gray-200 rounded-lg p-6 hover-lift custom-shadow flex items-center space-x-reverse space-x-4">
+                    <div class="bg-purple-500 text-white p-4 rounded-full">
+                        <i class="fas fa-calendar-alt text-2xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-gray-500 text-sm mb-1">هذا الشهر</p>
+                        <h3 class="text-2xl font-bold text-gray-800">{{ $stats['this_month'] }}</h3>
                     </div>
                 </div>
             </div>
 
-            <!-- Buttons for Activation Section -->
-            <div class="bg-white shadow-md rounded-lg mb-6 p-6">
-                <h2 class="text-lg font-medium text-gray-900 mb-4">
-                    <i class="fas fa-location-arrow ml-2 text-indigo-600"></i> تفعيل جمع البيانات
-                </h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <!-- Activate Data Collection Button -->
-                    <form action="{{ route('activate.location') }}" method="GET">
-                        <button type="submit" class="inline-flex items-center px-6 py-3 text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                            تفعيل جمع البيانات
-                        </button>
-                    </form>
-                    <!-- Deactivate Data Collection Button -->
-                    <form action="{{ route('deactivate.location') }}" method="GET">
-                        <button type="submit" class="inline-flex items-center px-6 py-3 text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                            إلغاء تفعيل جمع البيانات
-                        </button>
-                    </form>
-                    <!-- Delete All Data Button -->
-                    <form action="{{ route('delete.location') }}" method="GET">
-                        <button type="submit" class="inline-flex items-center px-6 py-3 text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                            حذف جميع البيانات
-                        </button>
-                    </form>
-                    <!-- Insert Email Button -->
-                    <form action="{{ route('insert.email.admin') }}" method="POST" class="flex items-center">
-                        @csrf 
-                        <input type="text" name="email" class="input-group p-3 border rounded-md" value="{{$adminEmail}}" placeholder="ادخل البريد الالكتروني" required />
-                        <button type="submit" class="inline-flex items-center px-6 py-3 text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                            تأكيد الإرسال
-                        </button>
-                    </form>
-                </div>
+           
+                 <!-- Action Buttons Section -->
+        <div class="bg-white border border-gray-200 rounded-lg p-6 shadow-md">
+            <h2 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+                <i class="fas fa-location-arrow ml-3 text-indigo-600"></i> أزرار التحكم
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <!-- Activate Location Data Collection -->
+                <form action="{{ route('activate.location') }}" method="GET" class="w-full">
+                    <button type="submit" class="w-full bg-green-500 text-white py-3 rounded-lg hover:bg-green-600 transition-colors flex items-center justify-center space-x-reverse space-x-2">
+                        <i class="fas fa-play"></i>
+                        <span>تفعيل جمع البيانات</span>
+                    </button>
+                </form>
+
+                <!-- Deactivate Location Data Collection -->
+                <form action="{{ route('deactivate.location') }}" method="GET" class="w-full">
+                    <button type="submit" class="w-full bg-red-500 text-white py-3 rounded-lg hover:bg-red-600 transition-colors flex items-center justify-center space-x-reverse space-x-2">
+                        <i class="fas fa-stop"></i>
+                        <span>إيقاف جمع البيانات</span>
+                    </button>
+                </form>
+
+                <!-- Delete All Location Data -->
+                <form action="{{ route('delete.location') }}" method="GET" class="w-full">
+                    <button type="submit" onclick="return confirm('هل أنت متأكد من حذف جميع البيانات؟')" class="w-full bg-red-700 text-white py-3 rounded-lg hover:bg-red-800 transition-colors flex items-center justify-center space-x-reverse space-x-2">
+                        <i class="fas fa-trash"></i>
+                        <span>حذف جميع البيانات</span>
+                    </button>
+                </form>
+
+                <!-- Insert Admin Email -->
+                <form action="{{ route('insert.email.admin') }}" method="POST" class="w-full flex space-x-reverse space-x-2">
+                    @csrf 
+                    <input type="email" name="email" placeholder="أدخل البريد الإلكتروني" value="{{ $adminEmail }}" class="flex-grow py-3 px-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none" required>
+                    <button type="submit" class="bg-blue-500 text-white py-3 px-4 rounded-lg hover:bg-blue-600 transition-colors">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+            
+<!-- Filters Section -->
+<div class="bg-white border border-gray-200 rounded-lg p-6 shadow-lg">
+    <h2 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+        <i class="fas fa-filter ml-3 text-indigo-600"></i> الفلاتر
+    </h2>
+
+    <div id="filter-section" class="filter-section px-6 py-4 bg-white rounded-lg ">
+        <form id="filter-form" action="{{ route('admin.dashboard') }}" method="GET" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Date Filter -->
+            <div>
+                <label for="selected_date" class="block text-sm font-medium text-gray-700 mb-2">التاريخ</label>
+                <input type="date" id="selected_date" name="selected_date" value="{{ request('selected_date') }}" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-lg py-2 px-4">
+            </div>
+            
+            <!-- IP Filter (Partial Match) -->
+            <div>
+                <label for="ip" class="block text-sm font-medium text-gray-700 mb-2">عنوان IP</label>
+                <input type="text" id="ip" name="ip" value="{{ request('ip') }}" placeholder="ابحث عن جزء من عنوان IP" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-lg py-2 px-4">
             </div>
 
-            <!-- Filters Section -->
-            <div class="bg-white shadow-md rounded-lg mb-6 overflow-hidden">
-                <div class="bg-gray-50 px-4 py-3 border-b border-gray-200 flex justify-between items-center">
-                    <h2 class="text-lg font-medium text-gray-900">
-                        <i class="fas fa-filter ml-2 text-indigo-600"></i> الفلاتر
+            <div class=" mt-6 space-x-4">
+                <!-- Apply Filters Button -->
+                <button type="submit" class="inline-flex items-center px-8 py-3 text-sm font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    <i class="fas fa-filter ml-2"></i> تطبيق الفلاتر
+                </button>
+
+                <!-- Reset Filters Button -->
+                <a href="{{ route('admin.dashboard') }}" class="inline-flex items-center px-8 py-3 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    <i class="fas fa-sync ml-2"></i> إعادة الضبط
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+            <!-- Data Table Section -->
+            <div class="bg-white border border-gray-200 rounded-lg custom-shadow overflow-hidden">
+                <div class="p-6">
+                    <h2 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+                        <i class="fas fa-table ml-3 text-indigo-600"></i> بيانات المواقع
                     </h2>
-                </div>
-                <div id="filter-section" class="filter-section px-4 py-4 bg-white">
-                    <form id="filter-form" action="{{ route('admin.dashboard') }}" method="GET" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <!-- Date Filter -->
-                        <div>
-                            <label for="selected_date" class="block text-sm font-medium text-gray-700 mb-1">التاريخ</label>
-                            <input type="date" id="selected_date" name="selected_date" value="{{ request('selected_date') }}" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
-                        </div>
-
-                        <!-- IP Filter (Partial Match) -->
-                        <div>
-                            <label for="ip" class="block text-sm font-medium text-gray-700 mb-1">عنوان IP</label>
-                            <input type="text" id="ip" name="ip" value="{{ request('ip') }}" placeholder="ابحث عن جزء من عنوان IP" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
-                        </div>
-
-                        <div class="md:col-span-2 flex justify-end mt-2">
-                            <button type="submit" class="mr-2 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                <i class="fas fa-filter ml-2"></i> تطبيق الفلاتر
-                            </button>
-                            <a href="{{ route('admin.dashboard') }}" class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                <i class="fas fa-sync ml-2"></i> إعادة الضبط
-                            </a>
-                        </div>
-                    </form>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-right">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th class="py-3 px-4 text-sm font-medium text-gray-600">المعرف</th>
+                                    <th class="py-3 px-4 text-sm font-medium text-gray-600">خط العرض</th>
+                                    <th class="py-3 px-4 text-sm font-medium text-gray-600">خط الطول</th>
+                                    <th class="py-3 px-4 text-sm font-medium text-gray-600">عنوان IP</th>
+                                    <th class="py-3 px-4 text-sm font-medium text-gray-600">تاريخ الإنشاء</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($locations as $location)
+                                    <tr class="border-b hover:bg-gray-50 transition-colors">
+                                        <td class="py-4 px-4 text-sm text-gray-900">{{ $location->id }}</td>
+                                        <td class="py-4 px-4 text-sm text-gray-600">{{ $location->latitude }}</td>
+                                        <td class="py-4 px-4 text-sm text-gray-600">{{ $location->longitude }}</td>
+                                        <td class="py-4 px-4 text-sm text-gray-600">{{ $location->ip }}</td>
+                                        <td class="py-4 px-4 text-sm text-gray-600">{{ $location->created_at }}</td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="5" class="text-center py-4 text-gray-500">لا توجد بيانات لعرضها</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Pagination -->
+                    <div class="mt-6">
+                        {{ $locations->links() }}
+                    </div>
                 </div>
             </div>
         </div>
