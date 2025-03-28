@@ -145,13 +145,14 @@
                 </form>
 
                 <!-- Insert Admin Email -->
-                <form action="{{ route('insert.email.admin') }}" method="POST" class="w-full flex space-x-reverse space-x-2">
+                <form action="{{ route('insert.email.admin') }}" method="POST" class="w-full flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-2">
                     @csrf 
-                    <input type="email" name="email" placeholder="أدخل البريد الإلكتروني" value="{{ $adminEmail }}" class="flex-grow py-3 px-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none" required>
-                    <button type="submit" class="bg-blue-500 text-white py-3 px-4 rounded-lg hover:bg-blue-600 transition-colors">
+                    <input type="email" name="email" placeholder="أدخل البريد الإلكتروني" value="{{ $adminEmail }}" class="w-full md:w-auto flex-grow py-3 px-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none" required>
+                    <button type="submit" class="w-full md:w-auto bg-blue-500 text-white py-3 px-4 rounded-lg hover:bg-blue-600 transition-colors">
                         <i class="fas fa-paper-plane"></i>
                     </button>
                 </form>
+                
             </div>
         </div>
 
