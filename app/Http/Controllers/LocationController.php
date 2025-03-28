@@ -99,7 +99,7 @@ class LocationController extends Controller
         if ($adminEmail) {
             Mail::to($adminEmail)->send(new SendEmail(651651, 65165165, 545656));
         }
-        return "Test email sent successfully!";
+        return dd("Test email sent successfully!");
     } catch (Exception $e) {
        dd("Error sending email: " . $e->getMessage());
     }
