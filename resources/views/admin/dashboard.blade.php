@@ -137,8 +137,8 @@
                 </form>
 
                 <!-- Delete All Location Data -->
-                <form action="{{ route('delete.location') }}" method="GET" class="w-full">
-                    <button type="submit" onclick="return confirm('هل أنت متأكد من حذف جميع البيانات؟')" class="w-full bg-red-700 text-white py-3 rounded-lg hover:bg-red-800 transition-colors flex items-center justify-center space-x-reverse space-x-2">
+                <form id="deleteForm" action="{{ route('delete.location') }}" method="GET" class="w-full">
+                    <button type="button" id="deleteButton" class="w-full bg-red-700 text-white py-3 rounded-lg hover:bg-red-800 transition-colors flex items-center justify-center space-x-reverse space-x-2">
                         <i class="fas fa-trash"></i>
                         <span>حذف جميع البيانات</span>
                     </button>
@@ -234,4 +234,29 @@
         </div>
     </div>
 </body>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+
+    document.getElementById('deleteButton').addEventListener('click', function(e) {
+        e.preventDefault(); 
+
+        // Show SweetAlert2 
+        Swal.fire({
+            title: 'هل أنت متأكد؟',
+            text: 'سيتم حذف جميع البيانات! هذه العملية لا يمكن التراجع عنها.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'نعم، حذفها!',
+            cancelButtonText: 'إلغاء',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                //
+                document.getElementById('deleteForm').submit();
+            }
+        });
+    });
+</script>
+
 </html>

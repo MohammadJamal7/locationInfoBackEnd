@@ -49,14 +49,14 @@ class LocationController extends Controller
  // Method to activate the location collection
  public function activateLocation(Request $request)
  {
-     // Find the setting (or create one if it doesn't exist)
+   
      $setting = Setting::first();
 
      if ($setting) {
          $setting->is_location_enabled = true;
          $setting->save();
      } else {
-         // If no setting is found, create a new one and activate location collection
+         
          Setting::create([
              'is_location_enabled' => true
          ]);
@@ -64,6 +64,7 @@ class LocationController extends Controller
 
      return redirect()->back()->with('success', 'تم تفعيل جمع البيانات بنجاح!');
  }
+
 
  // Method to deactivate the location collection
  public function deactivateLocation(Request $request)
@@ -84,7 +85,7 @@ class LocationController extends Controller
       $setting = Setting::first();
       return response()->json([
           'status' => $setting ? $setting->is_location_enabled : false
-      ],200);
+      ], 200);
   }
   
   public function deleteAll(){
@@ -105,5 +106,7 @@ class LocationController extends Controller
     }
     
 }
+
+
 
 }
