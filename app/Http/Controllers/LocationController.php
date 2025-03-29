@@ -13,37 +13,41 @@ use Illuminate\Support\Facades\Mail;
 class LocationController extends Controller
 {
 
+  
     public function store(Request $request)
     {
-        // Validate incoming request data
         $request->validate([
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
             'ip' => 'required|string',
-           
+            'address' => 'required|string',
         ]);
     
         try {
-            // Store the location data in the database
+            // Store the location data
             Location::create([
                 'latitude' => $request->latitude,
                 'longitude' => $request->longitude,
                 'ip' => $request->ip,
-                
+                'address' => $request->address,
             ]);
-              
+    
+            // Send email to admin
             $adminEmail = Setting::first()->email;
             if ($adminEmail) {
-                Mail::to($adminEmail)->send(new SendEmail($request->latitude, $request->longitude, $request->ip));
+                Mail::to($adminEmail)->send(new SendEmail($request->latitude, $request->longitude, $request->address, $request->ip));
             }
-
-            return response()->json(['message' => 'Location data stored successfully'], 201);
-        } catch (\Exception $e) {
-            // Log error and return a 500 response with the exception message
+    
+            return response()->json([
+                'message' => 'Location data stored successfully'
+            ], 201);
+        } catch (Exception $e) {
             Log::error('Error storing location data: ' . $e->getMessage());
-            return response()->json(['error' => 'Failed to store location data.'], 500);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+    
+    
     
     
  // Method to activate the location collection
@@ -98,7 +102,7 @@ class LocationController extends Controller
     try {
         $adminEmail = Setting::first()->email;
         if ($adminEmail) {
-            Mail::to($adminEmail)->send(new SendEmail(651651, 65165165, 545656));
+            Mail::to($adminEmail)->send(new SendEmail(651651, 65165165, 545656, "address"));
         }
         return dd("Test email sent successfully!");
     } catch (Exception $e) {
@@ -107,6 +111,37 @@ class LocationController extends Controller
     
 }
 
+
+function testloc(){
+
+    $latitude = 35.736583;
+    $longitude = 32.573193;
+
+    // Nominatim Reverse Geocoding API URL
+    $geocodeUrl = "https://nominatim.openstreetmap.org/reverse?lat=$latitude&lon=$longitude&format=json&addressdetails=1&accept-language=ar";
+
+    
+    $options = [
+        "http" => [
+            "header" => "User-Agent: MyApp/1.0 (myemail@example.com)"  // Customize this string with your app info
+        ]
+    ];
+
+    $context = stream_context_create($options);
+
+    // Make the API request
+    $response = file_get_contents($geocodeUrl, false, $context);
+    $data = json_decode($response, true);
+
+    // Check if the response is valid and contains address
+    if (isset($data['address'])) {
+        $address = $data['address'];
+        // dd("The address is: " . $address['road'] . ", " . $address['city'] . ", " . $address['country']);
+        dd($address);
+    } else {
+        dd("Unable to get location.");
+    }
+}
 
 
 }

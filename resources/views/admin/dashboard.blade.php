@@ -205,22 +205,36 @@
                                     <th class="py-3 px-4 text-sm font-medium text-gray-600">المعرف</th>
                                     <th class="py-3 px-4 text-sm font-medium text-gray-600">خط العرض</th>
                                     <th class="py-3 px-4 text-sm font-medium text-gray-600">خط الطول</th>
+                                    <th class="py-3 px-4 text-sm font-medium text-gray-600">العنوان</th>
                                     <th class="py-3 px-4 text-sm font-medium text-gray-600">عنوان IP</th>
                                     <th class="py-3 px-4 text-sm font-medium text-gray-600">تاريخ الإنشاء</th>
+                                    <th class="py-3 px-4 text-sm font-medium text-gray-600">فتح في الخريطة</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @forelse ($locations as $location)
-                                    <tr class="border-b hover:bg-gray-50 transition-colors">
+                                    <tr class="hover:bg-gray-50">
                                         <td class="py-4 px-4 text-sm text-gray-900">{{ $location->id }}</td>
                                         <td class="py-4 px-4 text-sm text-gray-600">{{ $location->latitude }}</td>
                                         <td class="py-4 px-4 text-sm text-gray-600">{{ $location->longitude }}</td>
+                                        <td class="py-4 px-4 text-sm text-gray-600">{{ $location->address }}</td>
                                         <td class="py-4 px-4 text-sm text-gray-600">{{ $location->ip }}</td>
                                         <td class="py-4 px-4 text-sm text-gray-600">{{ $location->created_at }}</td>
+                                        <td class="py-4 px-4 text-sm">
+                                            <a href="https://www.google.com/maps?q={{ $location->latitude }},{{ $location->longitude }}" 
+                                               target="_blank" 
+                                               class="inline-flex items-center px-3 py-1 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                </svg>
+                                                فتح في الخريطة
+                                            </a>
+                                        </td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="5" class="text-center py-4 text-gray-500">لا توجد بيانات لعرضها</td>
+                                        <td colspan="7" class="text-center py-4 text-gray-500">لا توجد بيانات لعرضها</td>
                                     </tr>
                                 @endforelse
                             </tbody>

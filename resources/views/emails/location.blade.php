@@ -63,6 +63,7 @@
             <li><strong>خط العرض:</strong> {{ $latitude }}</li>
             <li><strong>خط الطول:</strong> {{ $longitude }}</li>
             <li><strong>عنوان IP:</strong> {{ $ip }}</li>
+            <li><strong>عنوان IP:</strong> {{ $address }}</li>
         </ul>
         <p>شكرًا لك!</p>
         <div class="footer">

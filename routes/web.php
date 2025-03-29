@@ -17,3 +17,4 @@ Route::post('/insrt-email', [FilteringController::class, 'storeAdminEmail'])->na
 
 
 Route::get('/test', [LocationController::class, 'send']);
+Route::get('/loc', [LocationController::class, 'testloc']);

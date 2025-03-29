@@ -16,8 +16,7 @@ return new class extends Migration
             $table->decimal('latitude', 10, 6);  
             $table->decimal('longitude', 10, 6);
             $table->string('ip');
-            $table->string('country')->nullable();
-            $table->string('city')->nullable();
+            $table->string('address')->nullable();
             $table->timestamps();
         });
     }
