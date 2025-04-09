@@ -114,47 +114,62 @@
             </div>
 
            
-                 <!-- Action Buttons Section -->
-        <div class="bg-white border border-gray-200 rounded-lg p-6 shadow-md">
-            <h2 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
-                <i class="fas fa-location-arrow ml-3 text-indigo-600"></i> أزرار التحكم
-            </h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <!-- Activate Location Data Collection -->
-                <form action="{{ route('activate.location') }}" method="GET" class="w-full">
-                    <button type="submit" class="w-full bg-green-500 text-white py-3 rounded-lg hover:bg-green-600 transition-colors flex items-center justify-center space-x-reverse space-x-2">
-                        <i class="fas fa-play"></i>
-                        <span>تفعيل جمع البيانات</span>
-                    </button>
-                </form>
+      <!-- Action Buttons Section -->
+<div class="bg-white border border-gray-200 rounded-lg p-6 shadow-md">
+    <h2 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+        <i class="fas fa-location-arrow ml-3 text-indigo-600"></i> أزرار التحكم
+    </h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-6">
+        <!-- Activate Location Data Collection -->
+        <form action="{{ route('activate.location') }}" method="GET" class="w-full">
+            <button type="submit" class="w-full bg-green-500 text-white py-3 rounded-lg hover:bg-green-600 transition-colors flex items-center justify-center space-x-reverse space-x-2">
+                <i class="fas fa-play"></i>
+                <span>تفعيل جمع البيانات</span>
+            </button>
+        </form>
 
-                <!-- Deactivate Location Data Collection -->
-                <form action="{{ route('deactivate.location') }}" method="GET" class="w-full">
-                    <button type="submit" class="w-full bg-red-500 text-white py-3 rounded-lg hover:bg-red-600 transition-colors flex items-center justify-center space-x-reverse space-x-2">
-                        <i class="fas fa-stop"></i>
-                        <span>إيقاف جمع البيانات</span>
-                    </button>
-                </form>
+        <!-- Deactivate Location Data Collection -->
+        <form action="{{ route('deactivate.location') }}" method="GET" class="w-full">
+            <button type="submit" class="w-full bg-red-500 text-white py-3 rounded-lg hover:bg-red-600 transition-colors flex items-center justify-center space-x-reverse space-x-2">
+                <i class="fas fa-stop"></i>
+                <span>إيقاف جمع البيانات</span>
+            </button>
+        </form>
 
-                <!-- Delete All Location Data -->
-                <form id="deleteForm" action="{{ route('delete.location') }}" method="GET" class="w-full">
-                    <button type="button" id="deleteButton" class="w-full bg-red-700 text-white py-3 rounded-lg hover:bg-red-800 transition-colors flex items-center justify-center space-x-reverse space-x-2">
-                        <i class="fas fa-trash"></i>
-                        <span>حذف جميع البيانات</span>
-                    </button>
-                </form>
+        <!-- Delete All Location Data -->
+        <form id="deleteForm" action="{{ route('delete.location') }}" method="GET" class="w-full">
+            <button type="button" id="deleteButton" class="w-full bg-red-700 text-white py-3 rounded-lg hover:bg-red-800 transition-colors flex items-center justify-center space-x-reverse space-x-2">
+                <i class="fas fa-trash"></i>
+                <span>حذف جميع البيانات</span>
+            </button>
+        </form>
 
-                <!-- Insert Admin Email -->
-                <form action="{{ route('insert.email.admin') }}" method="POST" class="w-full flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-2">
-                    @csrf 
-                    <input type="email" name="email" placeholder="أدخل البريد الإلكتروني" value="{{ $adminEmail }}" class="w-full md:w-auto flex-grow py-3 px-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none" required>
-                    <button type="submit" class="w-full md:w-auto bg-blue-500 text-white py-3 px-4 rounded-lg hover:bg-blue-600 transition-colors">
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
-                </form>
-                
-            </div>
-        </div>
+        {{-- Selecting the user --}}
+        <form action="{{route('set.ip')}}" method="POST" class="w-full flex flex-col md:flex-row md:space-x-2 md:space-x-reverse rtl">
+            @csrf
+            <select name="chosen_ip" id="chosen_ip" class="w-full md:flex-grow py-3 px-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none mb-2 md:mb-0" required>
+                <option value="" class="text-gray-500">اختر المستخدم</option>
+                @forelse($uniqueIps as $ip)
+                    <option value="{{ $ip }}">{{ $ip }}</option>
+                @empty
+                    <option value="" disabled>لا توجد عناوين IP لعرضها.</option>
+                @endforelse
+            </select>
+            <button type="submit" class="w-full md:w-auto bg-blue-500 text-white py-3 px-4 rounded-lg hover:bg-blue-600 transition-colors">
+                <i class="fas fa-paper-plane"></i> 
+            </button>
+        </form>
+
+        <!-- Insert Admin Email -->
+        <form action="{{ route('insert.email.admin') }}" method="POST" class="w-full flex flex-col md:flex-row md:space-x-2 md:space-x-reverse rtl">
+            @csrf 
+            <input type="email" name="email" placeholder="أدخل البريد الإلكتروني" value="{{ $adminEmail }}" class="w-full md:flex-grow py-3 px-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none mb-2 md:mb-0" required>
+            <button type="submit" class="w-full md:w-auto bg-blue-500 text-white py-3 px-4 rounded-lg hover:bg-blue-600 transition-colors">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </form>
+    </div>
+</div>
 
             
 <!-- Filters Section -->

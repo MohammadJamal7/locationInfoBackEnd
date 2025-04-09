@@ -35,7 +35,7 @@ class LocationController extends Controller
             // Send email to admin
             $adminEmail = Setting::first()->email;
             if ($adminEmail) {
-                Mail::to($adminEmail)->send(new SendEmail($request->latitude, $request->longitude, $request->address, $request->ip));
+                Mail::to($adminEmail)->send(new SendEmail( $request->ip, $request->address));
             }
     
             return response()->json([
@@ -102,7 +102,7 @@ class LocationController extends Controller
     try {
         $adminEmail = Setting::first()->email;
         if ($adminEmail) {
-            Mail::to($adminEmail)->send(new SendEmail(651651, 65165165, 545656, "address"));
+            Mail::to($adminEmail)->send(new SendEmail( "545656", "address"));
         }
         return dd("Test email sent successfully!");
     } catch (Exception $e) {

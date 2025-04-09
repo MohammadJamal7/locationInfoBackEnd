@@ -57,13 +57,12 @@
 <body>
     <div class="container">
         <h1>معلومات الموقع</h1>
-        <p>مرحبًا،</p>
+        <p>مرحبًا</p>
         <p>لقد تم استلام معلومات موقع جديد</p>
         <ul class="data-list">
-            <li><strong>خط العرض:</strong> {{ $latitude }}</li>
-            <li><strong>خط الطول:</strong> {{ $longitude }}</li>
-            <li><strong>عنوان IP:</strong> {{ $ip }}</li>
-            <li><strong>عنوان IP:</strong> {{ $address }}</li>
+            <li><strong>العنوان:</strong> {{ $address }}</li>
+            <li><strong>الايبي:</strong> {{ $ip }}</li
+                <a href=""></a>
         </ul>
         <p>شكرًا لك!</p>
         <div class="footer">

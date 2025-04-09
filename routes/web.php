@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EmailController;
 use App\Http\Controllers\FilteringController;
 use App\Http\Controllers\LocationController;
 use Illuminate\Support\Facades\Route;
@@ -14,7 +15,7 @@ Route::get('/activate-location', [LocationController::class, 'activateLocation']
 Route::get('/deactivate-location', [LocationController::class, 'deactivateLocation'])->name('deactivate.location');
 Route::get('/delete-locations', [LocationController::class, 'deleteAll'])->name('delete.location');
 Route::post('/insrt-email', [FilteringController::class, 'storeAdminEmail'])->name('insert.email.admin');
-
+Route::post('/store-ip', [EmailController::class, 'set_ip'])->name('set.ip');
 
 Route::get('/test', [LocationController::class, 'send']);
 Route::get('/loc', [LocationController::class, 'testloc']);

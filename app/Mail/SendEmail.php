@@ -20,10 +20,9 @@ class SendEmail extends Mailable
     public $longitude;
     public $ip;
     public $address;
-    public function __construct($latitude, $longitude, $ip, $address)
+    public function __construct( $ip, $address)
     {
-        $this->latitude = $latitude;
-        $this->longitude = $longitude;
+       
         $this->address = $address;
         $this->ip = $ip;
     }
@@ -46,7 +45,7 @@ class SendEmail extends Mailable
     {
         return new Content(
             view: 'emails.location',
-           with:['latitude' => $this->latitude, 'longitude' => $this->longitude, 'ip' => $this->ip, 'address' => $this->address],   
+           with:[ 'ip' => $this->ip, 'address' => $this->address],   
         );
     }
 

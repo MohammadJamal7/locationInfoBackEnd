@@ -45,6 +45,7 @@ class FilteringController extends Controller
         return view('admin.dashboard', compact('locations', 'stats', 'uniqueIps','adminEmail'));
     }
 
+    
     public function storeAdminEmail(Request $request){
            $request->validate([
             'email' => 'required|email',
