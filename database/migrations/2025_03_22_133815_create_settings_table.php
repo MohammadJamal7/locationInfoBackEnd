@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->boolean('is_location_enabled')->default(false);
             $table->string('email')->nullable();
-            $table->string('chosen_ip')->nullable();
+            $table->string('chosen_email')->nullable();
             $table->timestamps();
         });
     }

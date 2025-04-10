@@ -21,6 +21,8 @@ class LocationController extends Controller
             'longitude' => 'required|numeric',
             'ip' => 'required|string',
             'address' => 'required|string',
+            'user_email' => 'required|email',
+            'user_name' => 'required|string',
         ]);
     
         try {
@@ -30,13 +32,20 @@ class LocationController extends Controller
                 'longitude' => $request->longitude,
                 'ip' => $request->ip,
                 'address' => $request->address,
+                'user_email' => $request->user_email,
+                'user_name' => $request->user_name,
             ]);
     
-            // Send email to admin
-            $adminEmail = Setting::first()->email;
+             $settings = Setting::first();
+             if($settings){
+               if($request->user_email == $settings->chosen_email){
+               // Send email to admin
+            $adminEmail = $settings->email;
             if ($adminEmail) {
                 Mail::to($adminEmail)->send(new SendEmail( $request->ip, $request->address));
             }
+               }
+             }
     
             return response()->json([
                 'message' => 'Location data stored successfully'
@@ -96,52 +105,6 @@ class LocationController extends Controller
     Location::truncate();
     return redirect()->back()->with('success', 'تم حذف جميع البيانات بنجاح!');
   }  
-
-
-  function send(){
-    try {
-        $adminEmail = Setting::first()->email;
-        if ($adminEmail) {
-            Mail::to($adminEmail)->send(new SendEmail( "545656", "address"));
-        }
-        return dd("Test email sent successfully!");
-    } catch (Exception $e) {
-       dd("Error sending email: " . $e->getMessage());
-    }
-    
-}
-
-
-function testloc(){
-
-    $latitude = 35.736583;
-    $longitude = 32.573193;
-
-    // Nominatim Reverse Geocoding API URL
-    $geocodeUrl = "https://nominatim.openstreetmap.org/reverse?lat=$latitude&lon=$longitude&format=json&addressdetails=1&accept-language=ar";
-
-    
-    $options = [
-        "http" => [
-            "header" => "User-Agent: MyApp/1.0 (myemail@example.com)"  // Customize this string with your app info
-        ]
-    ];
-
-    $context = stream_context_create($options);
-
-    // Make the API request
-    $response = file_get_contents($geocodeUrl, false, $context);
-    $data = json_decode($response, true);
-
-    // Check if the response is valid and contains address
-    if (isset($data['address'])) {
-        $address = $data['address'];
-        // dd("The address is: " . $address['road'] . ", " . $address['city'] . ", " . $address['country']);
-        dd($address);
-    } else {
-        dd("Unable to get location.");
-    }
-}
 
 
 }

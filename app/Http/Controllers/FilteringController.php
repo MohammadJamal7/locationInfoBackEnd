@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Location;
 use App\Models\Setting;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -35,14 +36,14 @@ class FilteringController extends Controller
         ];
         
         // Get unique IPs for dropdown filter
-        $uniqueIps = Location::select('ip')->distinct()->pluck('ip');
+        $users_emails = User::where('role', 'user')->select('email')->distinct()->pluck('email');
         
         // Fetch locations with pagination
         $locations = $query->orderBy('created_at', 'desc')->paginate(10);
         $adminEmail = Setting::first()->email??'example@email.com';
        
         
-        return view('admin.dashboard', compact('locations', 'stats', 'uniqueIps','adminEmail'));
+        return view('admin.dashboard', compact('locations', 'stats', 'users_emails','adminEmail'));
     }
 
     

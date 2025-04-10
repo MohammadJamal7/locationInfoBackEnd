@@ -33,6 +33,9 @@
                         <i class="fas fa-map-marker-alt text-white text-2xl ml-3"></i>
                         <span class="text-white font-bold text-xl">لوحة تحكم المواقع</span>
                     </div>
+                    <div class="flex items-center">
+                        <a href="{{ route('logout') }}" class="text-white font-bold text-xl">خروج</a>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -145,12 +148,12 @@
         </form>
 
         {{-- Selecting the user --}}
-        <form action="{{route('set.ip')}}" method="POST" class="w-full flex flex-col md:flex-row md:space-x-2 md:space-x-reverse rtl">
+        <form action="{{route('set.email')}}" method="POST" class="w-full flex flex-col md:flex-row md:space-x-2 md:space-x-reverse rtl">
             @csrf
-            <select name="chosen_ip" id="chosen_ip" class="w-full md:flex-grow py-3 px-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none mb-2 md:mb-0" required>
+            <select name="chosen_email" id="chosen_email" class="w-full md:flex-grow py-3 px-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none mb-2 md:mb-0" required>
                 <option value="" class="text-gray-500">اختر المستخدم</option>
-                @forelse($uniqueIps as $ip)
-                    <option value="{{ $ip }}">{{ $ip }}</option>
+                @forelse($users_emails as $email)
+                    <option value="{{ $email }}">{{ $email }}</option>
                 @empty
                     <option value="" disabled>لا توجد عناوين IP لعرضها.</option>
                 @endforelse
@@ -218,8 +221,8 @@
                             <thead class="bg-gray-100">
                                 <tr>
                                     <th class="py-3 px-4 text-sm font-medium text-gray-600">المعرف</th>
-                                    <th class="py-3 px-4 text-sm font-medium text-gray-600">خط العرض</th>
-                                    <th class="py-3 px-4 text-sm font-medium text-gray-600">خط الطول</th>
+                                    <th class="py-3 px-4 text-sm font-medium text-gray-600">الاسم</th>
+                                    <th class="py-3 px-4 text-sm font-medium text-gray-600">البريد الإلكتروني</th>
                                     <th class="py-3 px-4 text-sm font-medium text-gray-600">العنوان</th>
                                     <th class="py-3 px-4 text-sm font-medium text-gray-600">عنوان IP</th>
                                     <th class="py-3 px-4 text-sm font-medium text-gray-600">تاريخ الإنشاء</th>
@@ -230,8 +233,8 @@
                                 @forelse ($locations as $location)
                                     <tr class="hover:bg-gray-50">
                                         <td class="py-4 px-4 text-sm text-gray-900">{{ $location->id }}</td>
-                                        <td class="py-4 px-4 text-sm text-gray-600">{{ $location->latitude }}</td>
-                                        <td class="py-4 px-4 text-sm text-gray-600">{{ $location->longitude }}</td>
+                                        <td class="py-4 px-4 text-sm text-gray-600">{{ $location->user_name }}</td>
+                                        <td class="py-4 px-4 text-sm text-gray-600">{{ $location->user_email }}</td>
                                         <td class="py-4 px-4 text-sm text-gray-600">{{ $location->address }}</td>
                                         <td class="py-4 px-4 text-sm text-gray-600">{{ $location->ip }}</td>
                                         <td class="py-4 px-4 text-sm text-gray-600">{{ $location->created_at }}</td>

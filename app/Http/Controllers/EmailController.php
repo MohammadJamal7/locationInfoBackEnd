@@ -8,19 +8,19 @@ use Illuminate\Http\Request;
 class EmailController extends Controller
 {
     
-    function set_ip(Request $request){
+    function set_email(Request $request){
 
         $request->validate([
-            'chosen_ip' => 'required',
+            'chosen_email' => 'required',
         ]);
 
         $setting = Setting::first();
         if ($setting) {
-            $setting->chosen_ip = $request->chosen_ip;
+            $setting->chosen_email = $request->chosen_email;
             $setting->save();
         } else {
             Setting::create([
-                'chosen_ip' => $request->chosen_ip
+                'chosen_email' => $request->chosen_email
             ]);
         }
 

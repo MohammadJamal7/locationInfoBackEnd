@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('ip');
             $table->string('address')->nullable();
             $table->timestamps();
+            $table->string('user_email')->nullable();
+            $table->string('user_name')->nullable();
         });
     }
 
